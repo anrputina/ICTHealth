@@ -18,16 +18,25 @@ X_test(:,F0)=[];
 rng('default');
 
 a_hat = rand(21,1);
-gamma = 0.0005;
+gamma = 0.2;
 epsilon = 10^-6;
 a_hat_old = rand(21,1);
 
-while ( norm(a_hat - a_hat_old) > epsilon )
-    grad_a_hat = -2 * transpose(X_train)*y_train + 2 * transpose(X_train)*X_train*a_hat;
-    tmp_a_hat = a_hat - (gamma * grad_a_hat);
-    a_hat_old = a_hat;
-    a_hat = tmp_a_hat;
+% while ( norm(a_hat - a_hat_old) > epsilon )
+%     grad_a_hat = -2 * transpose(X_train)*y_train + 2 * transpose(X_train)*X_train*a_hat;
+%     tmp_a_hat = a_hat - (gamma * grad_a_hat);
+%     a_hat_old = a_hat;
+%     a_hat = tmp_a_hat;
+% end
+
+for i = 1:10000
+
+    gradiente = gradient (a_hat);
+    a_hat = a_hat - gamma*gradiente;
+    
 end
+
+
 
 
 % counter=0;
@@ -40,4 +49,3 @@ end
 % %     a_hat = a_hat - (gamma * grad_a_hat);
 %     counter = counter+1;
 % end
-

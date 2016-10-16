@@ -17,12 +17,9 @@ data_train = finalMatrix(rowPacients_train,:);
     data_train_norm = data_train_norm ./ std_data_train(:,5:22);
     data_train_norm = [data_train(:,1:4), data_train_norm];
     
-data_test = finalMatrix(rowPacients_test,:);
-    m_data_test = mean(data_test,1);
-    std_data_test = std(data_test,1);
-    
-    data_test_norm = data_test(:,5:22) - m_data_test(:,5:22);
-    data_test_norm = data_test_norm ./ std_data_test(:,5:22);
+data_test = finalMatrix(rowPacients_test,:);   
+    data_test_norm = data_test(:,5:22) - m_data_train(:,5:22);
+    data_test_norm = data_test_norm ./ std_data_train(:,5:22);
     data_test_norm = [data_test(:,1:4), data_test_norm];
 
 save('data_train_norm','data_train_norm');

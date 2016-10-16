@@ -38,6 +38,17 @@ grid on
 legend('y\_test', 'y\_hat\_test')
 title('y\_test vs y\_hat\_test')
 
+[N,X] = hist(y_hat_train - y_train, 10);
+figure
+hist(y_hat_train - y_train, 10)
+grid on
+
+
+[N2,X2] = hist(y_hat_test - y_test, 10);
+figure
+hist(y_hat_test - y_test, 10)
+grid on
+
 % a_hat2 = inv(transpose(X_train(:,5:end))*X_train(:,5:end))*transpose(X_train(:,5:end))*y_train;
 % y_hat_train2 = X_train(:,5:end) * a_hat2;
 % y_hat_test2 = X_test(:,5:end) * a_hat2;
@@ -51,3 +62,10 @@ title('y\_test vs y\_hat\_test')
 % plot(y_hat_test2)
 % hold on
 % plot(y_test)
+% 
+% 
+% figure
+% hist(y_hat_train2 - y_train,200)
+% 
+% figure
+% hist(y_hat_test2 - y_test,200)
