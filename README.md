@@ -1,8 +1,7 @@
 ## ICT for Health
-ICT for Health Laboratory
+ICT for Health Laboratory, ICT4SS, Politecnico di Torino
 
-ICT4SS, Politecnico di Torino
-
+The aim of the laboratories is the exploration of statistical and signal processing applications in the public health field. Will be tackled regression and classification techniques and open-source machine learning software in the areas of basic research, prevention, diagnostic process and management of eldery people at home.
 
 #### Lab 1
 1. Language: Matlab
@@ -12,3 +11,4 @@ ICT4SS, Politecnico di Torino
   * Part  II : Prepare training and test data
   * Part III : Perform Regression with MSE
   * Part  IV : Perform Regression with Gradient Algorithm
+  * Part   V : Perform Regression with Steepest Descent
