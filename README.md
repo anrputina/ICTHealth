@@ -12,3 +12,9 @@ The aim of the laboratories is the exploration of statistical and signal process
   * Part III : Perform Regression with MSE
   * Part  IV : Perform Regression with Gradient Algorithm
   * Part   V : Perform Regression with Steepest Descent
+
+#### Lab 2
+1. Language: Matlab
+2. Topic: Machine Learning
+3. Description: (Parkinson)
+  * Only one Part: Implementation of Principal Component Regression (PCR), Feature extraction appliedt to linear regression. Karhunen-Loeve decomposition.

@@ -16,9 +16,9 @@ X_test=data_test_norm;
 X_test(:,F0)=[];
 
 % Estimate a_hat
-% a_hat = inv(transpose(X_train)*X_train)*transpose(X_train)*y_train;
-% y_hat_train = X_train * a_hat;
-% y_hat_test = X_test * a_hat;
+a_hat = inv(transpose(X_train)*X_train)*transpose(X_train)*y_train;
+y_hat_train = X_train * a_hat;
+y_hat_test = X_test * a_hat;
 
 figure
 plot(y_hat_train)
@@ -49,9 +49,13 @@ figure
 hist(y_hat_test - y_test, 10)
 grid on
 
-a_hat2 = inv(transpose(X_train(:,5:end))*X_train(:,5:end))*transpose(X_train(:,5:end))*y_train;
+% errore = norm(y_hat_test - y_test);
+
+% a_hat2 = inv(transpose(X_train(:,5:end))*X_train(:,5:end))*transpose(X_train(:,5:end))*y_train;
 % y_hat_train2 = X_train(:,5:end) * a_hat2;
 % y_hat_test2 = X_test(:,5:end) * a_hat2;
+% 
+% errore2 = norm(y_hat_test2 - y_test);
 % 
 % figure
 % plot(y_hat_train2)
