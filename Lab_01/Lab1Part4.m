@@ -8,44 +8,54 @@ load('data_test_norm.mat');
 F0 = 7;
 
 y_train = data_train_norm(:,F0);
-X_train = data_train_norm;
-X_train(:,F0) = [];
+X_trainF = data_train_norm;
+X_trainF(:,F0) = [];
 
-y_test=data_test_norm(:,F0);
-X_test=data_test_norm;
-X_test(:,F0)=[];
+y_test =data_test_norm(:,F0);
+X_testF=data_test_norm;
+X_testF(:,F0)=[];
+
+X_train = X_trainF(:,5:end);
+X_test = X_testF(:,5:end);
 
 rng('default');
 
-a_hat = rand(21,1);
-gamma = 0.2;
+a_hat_i = rand(17,1);
+gamma = 10^-7;
 epsilon = 10^-6;
-a_hat_old = rand(21,1);
+a_hat_ii = rand(17,1);
 
-% while ( norm(a_hat - a_hat_old) > epsilon )
-%     grad_a_hat = -2 * transpose(X_train)*y_train + 2 * transpose(X_train)*X_train*a_hat;
-%     tmp_a_hat = a_hat - (gamma * grad_a_hat);
-%     a_hat_old = a_hat;
-%     a_hat = tmp_a_hat;
-% end
-
-for i = 1:10000
-
-    gradiente = gradient (a_hat);
-    a_hat = a_hat - gamma*gradiente;
+counter=0;
+while ( 1 )
     
+    if(norm(a_hat_i - a_hat_ii) < epsilon)
+        break;
+    end
+    
+    grad_a_hat_i = -2 * transpose(X_train)*y_train + 2 * transpose(X_train)*X_train*a_hat_i;
+    a_hat_ii = a_hat_i;
+    a_hat_i = a_hat_i - (gamma * grad_a_hat_i);
+    counter = counter + 1;
 end
 
 
+y_hat_train = X_train * a_hat_i;
+y_hat_test = X_test * a_hat_i;
 
+figure
+plot(y_hat_train)
+hold on
+plot(y_train, '--k')
+axis([0 840 -2 18])
+grid on
+legend('y\_hat\_train','y\_train', 'Location', 'northwest')
+title('y\_hat\_train vs y\_train')
 
-% counter=0;
-% for i=1:10000
-%     grad_a_hat = gradient(a_hat);
-%     a_hat_old = a_hat;
-%     a_hat = a_hat - gamma*grad_a_hat;
-% %     grad_a_hat = -2 * transpose(X_train)*y_train + 2 * transpose(X_train)*X_train*a_hat;
-% %     grad_a_hat = gradient(a_hat);
-% %     a_hat = a_hat - (gamma * grad_a_hat);
-%     counter = counter+1;
-% end
+figure
+plot(y_test)
+hold on
+plot(y_hat_test, '--k')
+axis([0 150 -1.75 3.5])
+grid on
+legend('y\_test', 'y\_hat\_test')
+title('y\_test vs y\_hat\_test')
