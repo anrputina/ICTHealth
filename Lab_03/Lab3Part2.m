@@ -85,11 +85,20 @@ L = 257;
 
 U_L = U(:, 1:L);
 Z = y * U_L;
+% Z = (1/sqrt(N)) * Z * A^(-1/2);
+
+for i=1:size(Z)
+    Z_norm(i,:) = (Z(i,:) - mean(Z))./std(Z);
+end
+
+Z=[];
+Z = Z_norm;
+
+
 z1 = Z(class1,:);
 z2 = Z(class2,:);
 w1 = mean(z1,1);
 w2 = mean(z2,1);
-
 
 xmeansB = [w1;w2];
 enyB = diag(Z*transpose(Z));
@@ -99,7 +108,7 @@ dotprodB = Z * transpose(xmeansB);
 [UB,VB]=meshgrid(enxB,enyB);
 dist2B=UB+VB-2*dotprodB;
 
-var_patients = var(Z')';
+var_patients = var(Z);
 
 dist2B_bis(:,1)= dist2B(:,1)- 2 * log(pi1);
 dist2B_bis(:,2)= dist2B(:,2)- 2 * log(pi2);
@@ -109,8 +118,31 @@ previsione2 = previsione2';
 
 
 
+verinegativiB = 0;
+falsipositiviB = 0;
+veripositiviB = 0;
+falsinegativiB = 0;
+arrhythmia_lastcol = arrhythmiaCleaned(:,end);
+for i = 1 : length(arrhythmiaCleaned) 
+    if (arrhythmia_lastcol(i) == 1)
+        if (arrhythmia_lastcol(i) - previsione2(i) == 0)
+            verinegativiB = verinegativiB + 1;
+        else 
+            falsipositiviB = falsipositiviB + 1;
+        end
+    else
+        if (arrhythmia_lastcol(i) - previsione2(i) == 0) 
+            veripositiviB = veripositiviB + 1;
+        else 
+            falsinegativiB = falsinegativiB + 1;
+        end
+    end
+end
 
-
+specificityB = verinegativiB / (verinegativiB + falsipositiviB); %true negative
+sensitivityB = veripositiviB / (veripositiviB + falsinegativiB); % true positive
+falsealarmB = falsipositiviB / (verinegativiB + falsipositiviB);
+misseddetectionB = falsinegativiB / (veripositiviB + falsinegativiB);
 
 
 
