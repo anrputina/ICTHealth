@@ -1,1 +1,2 @@
 \contentsline {section}{\numberline {1}Lab1: Linear Regression \& Parkinson}{2}
+\contentsline {subsection}{\numberline {1.1}Prepare the Data}{2}

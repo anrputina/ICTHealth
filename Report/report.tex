@@ -60,13 +60,88 @@
 %--------------------------------------------------------------
 
 \section{Lab1: Linear Regression \& Parkinson}
-The aim of the laboratory is understanding the basic idea of the regression and apply different techniques to obtain the desired results. In particular, will be considered a database containing a real Parkinson's Disease dataset and different regression solutions will by applied:
+The aim of the laboratory is understanding the basic idea of the regression and apply different techniques to obtain the desired results. In particular, it will be considered a database containing a real Parkinson's Disease dataset and different regression solutions will by applied:
 \begin{itemize}
 \item MSE (Minimum Square Error)
 \item Gradient Algorithm
 \item Steepest Descent Algorithm
 \end{itemize} 
 Source: \footnotesize{ https://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/}
+
+\subsection{Prepare the Data}
+The first script takes as input variable the total number of pacients \texttt{Npacients} and converts the fourth column (test\_time) into its integer part.
+Furthermore creates a new matrix containing, for all the dates, only the mean of the measurements for each pacient so at the end the new matrix has one row for each day (with the mean of the measured values of the features) for each pacient.
+
+\begingroup
+    \fontsize{12pt}{8pt}\selectfont
+\begin{verbatim}
+close all
+clear all
+%Lab 1 - ICT HEALTH - Prepare the data
+
+load('updrs.mat');
+
+Npacients = 42;
+parkinsonsupdrs(:,4) = abs(floor(parkinsonsupdrs(:,4)));
+
+finalMatrix = [];
+for pacient = 1: Npacients
+
+    rowPacient = parkinsonsupdrs(:, 1) == pacient;
+    matrixPacient = parkinsonsupdrs(rowPacient,:);
+
+    count = 0;
+    for day = 1:max(parkinsonsupdrs(:,4))+1
+       indx = matrixPacient(:,4) == day-1;
+       if (any(indx(:) == 1))
+           count = count+1;
+           meanMatrixPacient(count,:) = mean(matrixPacient(indx,:));
+       end
+    end
+
+    finalMatrix = [finalMatrix; meanMatrixPacient];
+    meanMatrixPacient=[];
+
+end
+save('finalMatrix','finalMatrix');
+\end{verbatim}
+\endgroup
+The next step is to divide the pacients into two groups. The first sub-group will be used for the training phase of the algorithm while the second one will be used for the testing part. Anyway the data has to have zero mean and variance equal to 1 (EXPLAIN WHY!!!). The easiest way is to subscract the mean of each feature  
+to all the pacients and divide by the standard deviation. Obviously the mean and the standard deviation is computed on training data we decided before. The data is now normalized so has zero mean and variance = 1
+
+\begingroup
+	\fontsize{12pt}{8pt}\selectfont
+
+    \begin{verbatim}
+close all
+clear all
+%Lab 1 - ICT HEALTH - Prepare data for train
+
+load('finalMatrix.mat');
+
+Npacients = 36;
+rowPacients_train = finalMatrix(:,1) <= Npacients;
+rowPacients_test =  finalMatrix(:,1) > Npacients;
+
+data_train = finalMatrix(rowPacients_train,:);
+    m_data_train = mean(data_train,1);
+    v_data_train = var(data_train,1);
+    std_data_train = std(data_train,1);
+
+    data_train_norm = data_train(:,5:22) - m_data_train(:,5:22);
+    data_train_norm = data_train_norm ./ std_data_train(:,5:22);
+    data_train_norm = [data_train(:,1:4), data_train_norm];
+
+data_test = finalMatrix(rowPacients_test,:);
+    data_test_norm = data_test(:,5:22) - m_data_train(:,5:22);
+    data_test_norm = data_test_norm ./ std_data_train(:,5:22);
+    data_test_norm = [data_test(:,1:4), data_test_norm];
+
+save('data_train_norm','data_train_norm');
+save('data_test_norm','data_test_norm');
+\end{verbatim}
+
+\endgroup
 
 
 
