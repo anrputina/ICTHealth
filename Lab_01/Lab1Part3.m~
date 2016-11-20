@@ -38,6 +38,7 @@ axis([0 150 -1.75 3.5])
 grid on
 legend('y\_hat\_test', 'y\_test')
 title('y\_hat\_test vs y\_test')
+set(gcf,'units','pixels','position',[0 0 400 0])
 
 [N,X] = hist(y_hat_train - y_train, 50);
 figure
