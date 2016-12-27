@@ -82,5 +82,70 @@ while(flag)
     
     count = count+1;
 end
-
 [specificity, sensitivity, falsealarm, missdetection] = check_detections(assigned_class, class_id);
+
+
+y = arrhythmiaCleaned(:,1:end-1);
+
+x1 = mean(y1);
+x2 = mean(y2);
+
+count=0;
+flag = 1;
+while(flag)    
+    
+    flag = 0;
+    
+    xmeans = [x1;x2];
+    eny = diag(y*transpose(y));
+    enx = diag(xmeans*transpose(xmeans));
+    dotprod = y * transpose(xmeans);
+    %each y(n) and each x
+    [U,V]=meshgrid(enx,eny);
+    dist2=U+V-2*dotprod;
+
+    [dummy, previsione] = min(dist2.');
+    previsione = previsione';
+    
+    for ii=1:N_pacients
+        
+        if (previsione(ii) == 1)
+            Nk1 = Nk1+1;
+            Wn1 = [Wn1; norm_data(ii,:)];
+            if assigned_class(ii)==1
+            else
+                assigned_class(ii)=1;
+                flag = 1;
+            end
+            
+        else
+            Nk2 = Nk2+1;
+            Wn2 = [Wn2; norm_data(ii,:)];
+            if assigned_class(ii)==2
+            else
+                assigned_class(ii)=2;
+                flag=1;
+            end
+        end
+    end
+    
+%     Wn1 = normalize_matrix(Wn1);
+%     Wn2 = normalize_matrix(Wn2);
+    
+    x1 = 1/Nk1 * sum(Wn1,1);
+    x2 = 1/Nk2 * sum(Wn2,1);
+       
+    Nk1=0;
+    Nk2=0;
+    Wn1=[];
+    Wn2=[];
+    
+    count = count+1;
+end
+
+[specificity2, sensitivity2, falsealarm2, missdetection2] = check_detections(assigned_class, class_id);
+
+
+
+
+
