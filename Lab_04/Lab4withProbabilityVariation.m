@@ -24,9 +24,13 @@ y2 = norm_data(class2,:);
 x1 = mean(y1);
 x2 = mean(y2);
 
+
 k=2;
 n_features = size(norm_data,2);
 N_pacients = size(norm_data,1);
+
+% x1 = normalize_matrix(randn(1,n_features));
+% x2 = normalize_matrix(randn(1,n_features));
 
 Nk1=0;
 Nk2=0;
